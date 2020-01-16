@@ -33,8 +33,6 @@ class RegistView(APIView):
         mobile = request.data.get("mobile", None)
         password = request.data.get("password", None)
 
-        print(mer_name)
-
         assert mer_name,(-14,"未填公司名")
         assert mobile,(-11,"手机号未填")
         assert password,(-12,"密码未填")

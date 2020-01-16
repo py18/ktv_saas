@@ -25,6 +25,7 @@ class LoginView(APIView):
     def post(self,request,*args,**kwargs):
         '''
             TODO: 登录
+            test_json post: {"mobile":"13412561232","password":"a123456"}
         '''
         mobile = request.data.get('mobile', None)
         password = request.data.get('password', None)
@@ -47,10 +48,10 @@ class LoginView(APIView):
             token = jwt.encode(token_data, ini.SecretCode, algorithm='HS256')
             data = {}
             data["user_name"] = user.name
-            data["merchant_name"] = user.merchant.name
+            data["merchant_name"] = user.merchant.mer_name
             data["merchant_id"] = user.merchant_id
             data["merchant_logo"] = user.merchant.logo
-            data["token"] = token
+            data["token"] = token.decode('utf8')
             data["menu_list"] = []
             re_data = recode.success_func(data)
         except Exception as e:
