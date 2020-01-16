@@ -88,6 +88,7 @@ class ApplocationMenuFunc(DefModels):
         db_table = 'application_menu_func'
         managed = True
         verbose_name = 'app菜单方法表'
+        
 
 
 class Merchant(DefModels):

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'db_module',
+    'apps.db_module',
     'apps.buy_and_sell',
     'apps.inventory',
     'apps.member',
