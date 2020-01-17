@@ -166,8 +166,8 @@ class MerchantEmployee(MerchantDefModels):
 
     merchant_position = models.ForeignKey("MerchantPosition", on_delete=models.DO_NOTHING, verbose_name="职位")
     password = models.CharField(max_length=255, verbose_name="密码", default=generate_password_hash("123456"))
-    # 创建者
-    is_edit = models.BooleanField(default=False, verbose_name="是否创建者")
+    # 负责人
+    is_edit = models.BooleanField(default=False, verbose_name="是否负责人")
 
     class Meta:
         db_table = 'merchant_employee'

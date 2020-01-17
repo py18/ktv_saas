@@ -9,6 +9,7 @@ class ReCode(object):
         
         data = {
             "status":status,  # 状态
+            "code": 0,
             "error":error,  # 错误提示
             "message": "操作失败",  # 信息
             "timestamp":datetime.datetime.now(),  # 时间
@@ -18,7 +19,8 @@ class ReCode(object):
     def success_func(self,data: dict):
 
         re_data = {
-            "status":1,
+            "status":200,
+            "code": 1,
             "message":"操作成功",
             "data":data,
             "timestamp":datetime.datetime.now()

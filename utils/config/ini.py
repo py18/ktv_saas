@@ -1,4 +1,4 @@
 
 
-ExpireDate = 1
+ExpireDate = 7
 SecretCode = "!1234TDCQ"
