@@ -15,7 +15,7 @@ class BlockedIpMiddleware(MiddlewareMixin):
         if request.path_info == "/api/v1/merchant_file/login/" or request.path_info == "/api/v1/merchant_file/register/":
             return None
         try:
-            print(request.META,11111)
+            # print(request.META,11111)
             jwt_token = request.META.get('HTTP_AUTHORIZATION')
             token = jwt.decode(jwt_token, ini.SecretCode, algorithm='HS256')
             user = models.MerchantEmployee.objects.get(id=token["id"])
@@ -58,26 +58,3 @@ class BlockedIpMiddleware(MiddlewareMixin):
         # print(type(response),'---------------------')
         return response
 
-from django.contrib.auth.middleware import get_user
-from django.utils.functional import SimpleLazyObject
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-import jwt
-
-
-class JWTAuthenticationMiddleware(object):
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        request.user = SimpleLazyObject(lambda:self.__class__.get_jwt_user(request))
-        return self.get_response(request)
-
-    @staticmethod
-    def get_jwt_user(request):
-        user = get_user(request)
-        if user.is_authenticated:
-            return user
-        jwt_authentication = JSONWebTokenAuthentication()
-        if jwt_authentication.get_jwt_value(request):
-            user, jwt = jwt_authentication.authenticate(request)
-        return user

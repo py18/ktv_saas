@@ -230,6 +230,7 @@ class MerchantSpecification(MerchantDefModels):
         managed = True
         verbose_name = '商家规格表'
 
+
 class MerchantSpecificationValues(MerchantDefModels):
 
     specification = models.ForeignKey("MerchantSpecification", on_delete=models.DO_NOTHING, verbose_name="规格外键")
