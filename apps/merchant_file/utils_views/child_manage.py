@@ -27,31 +27,35 @@ from utils import redis_cli
 
 recode = ReCode()
 
-# class ChaildMerchantInfoManageView(APIView):
+class ChaildMerchantInfoManageView(APIView):
 
-#     def get(self, request, *args, **kwargs):
-#         '''
-#             TODO: 获取子店信息
-#             filter_values: 名称, 负责人姓名，负责人电话, 编号，创建时间
-#             id参数获取详情
-#         '''
-#         user = request.user
-#         id = request.GET.get("id", None)
-#         contact_person = request.GET.get("contact_person", None)
-#         contact_mobile = request.GET.get("contact_mobile", None)
-#         mer_no = request.GET.get("mer_no", None)
-#         mer_name = request.GET.get("mer_name", None)
+    def get(self, request, *args, **kwargs):
+        '''
+            TODO: 获取子店信息
+            filter_values: 名称, 负责人姓名，负责人电话, 编号，创建时间
+            id参数获取详情
+        '''
+        employee = request.employee
+        id = request.GET.get("id", None)
+        contact_person = request.GET.get("contact_person", None)
+        contact_mobile = request.GET.get("contact_mobile", None)
+        mer_no = request.GET.get("mer_no", None)
+        mer_name = request.GET.get("mer_name", None)
 
-#         se_dict = {}
-#         if contact_person:
-#             se_dict["contact_person"] = contact_person
-#         if contact_mobile:
-#             se_dict["contact_mobile"] = contact_mobile
-#         if mer_no:
-#             se_dict["mer_no"] = mer_no
-#         if mer_name:
-#             se_dict["mer_name"] = mer_name
+        se_dict = {}
+        if contact_person:
+            se_dict["contact_person"] = contact_person
+        if contact_mobile:
+            se_dict["contact_mobile"] = contact_mobile
+        if mer_no:
+            se_dict["mer_no"] = mer_no
+        if mer_name:
+            se_dict["mer_name"] = mer_name
 
-#         try:
+        try:
+            childs = models.Merchant.objects.get(id=user.merchant_id).ship.all().values()
+            print(childs)
 
-        
+        except Exception as e:
+            print(e)
+        return JsonResponse({"code":1})
