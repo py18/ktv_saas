@@ -15,7 +15,6 @@ class BlockedIpMiddleware(MiddlewareMixin):
         if request.path_info == "/api/v1/merchant_file/login/" or request.path_info == "/api/v1/merchant_file/register/":
             return None
         try:
-            # print(request.META,11111)
             jwt_token = request.META.get('HTTP_AUTHORIZATION')
             token = jwt.decode(jwt_token, ini.SecretCode, algorithm='HS256')
             user = models.MerchantEmployee.objects.get(id=token["id"])

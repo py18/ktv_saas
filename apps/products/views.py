@@ -17,9 +17,7 @@ class SpecificationsView(APIView):
         merchant_employee_id = employee.id
         merchant_id = employee.merchant_id
 
-        assert name,(-101,'name为必传字段')
-        assert merchant_employee_id, (-101, 'merchant_employee_id为必传字段')
-        assert merchant_id, (-101, 'merchant_id为必传字段')
+        assert name,(-17,'name为必传字段')
 
         obj = models.MerchantSpecification.objects.filter(name=name,merchant_id=merchant_id,is_del=False)
         if len(obj) != 0:
@@ -78,7 +76,7 @@ class SpecificationsView(APIView):
         name = self.request.data.get('name',None)
         serial_number = self.request.data.get('serial_number',None)
 
-        assert id is not None, (-101,'必传字段未传')
+        assert id is not None, (-18,'必传字段未传')
 
         update_dict = {'update_time':timezone.now()}
         if name:
@@ -98,7 +96,7 @@ class SpecificationsView(APIView):
         employee = self.request.employee
         merchant_id = employee.merchant_id
         merchant_employee_id = employee.id
-        assert id,(-101,'id为必传字段')
+        assert id,(-18,'id为必传字段')
         update_dict = {'update_time':timezone.now(),'is_del':True}
         try:
             with transaction.atomic():
@@ -106,7 +104,6 @@ class SpecificationsView(APIView):
         except Exception as w:
             return JsonResponse(ReCode().error_func(status=-1, error=w))
         return JsonResponse(ReCode().success_func(data={}))
-
 
 
 class SpecificationValuesView(APIView):
@@ -118,8 +115,8 @@ class SpecificationValuesView(APIView):
         specification_id = self.request.data.get('specification_id')
         name = self.request.data.get('name') #name封装为[]
         #格式为[{'name':'冷','serial_number':0},{'name':'热','serial_number':1}]
-        assert specification_id,(-101,'specification_id为必传字段')
-        assert name,(-101,'name为必传字段')
+        assert specification_id,(-19,'specification_id为必传字段')
+        assert name,(-20,'name为必传字段')
         try:
             with transaction.atomic():
                 for x in name:
@@ -144,7 +141,7 @@ class SpecificationValuesView(APIView):
         specification_id = self.request.GET.get('specification_id')
         employee = self.request.employee
         merchant_id = employee.merchant_id
-        assert specification_id,(-101,'specification_id为必传字段')
+        assert specification_id,(-19,'specification_id为必传字段')
         obj_set = models.MerchantSpecificationValues.objects.filter(specification_id=specification_id,is_del=False,merchant_id=merchant_id)
         re_list = []
         for x in obj_set:
@@ -167,9 +164,9 @@ class SpecificationValuesView(APIView):
         return JsonResponse(ReCode().success_func(data={}))
     def put(self,request,*args,**kwargs):
         id = self.request.data.get('id')
-        name = self.request.data.get('name')
-        serial_number = self.request.data.get('serial_number')
-        assert id,(-101,'id为必传字段')
+        name = self.request.data.get('name',None)
+        serial_number = self.request.data.get('serial_number',None)
+        assert id,(-21,'id为必传字段')
         update_dict = {}
         if name:
             update_dict['name'] = name
@@ -181,3 +178,37 @@ class SpecificationValuesView(APIView):
         except Exception as w:
             return JsonResponse(ReCode().error_func(status=-1,error=w))
         return JsonResponse(ReCode().success_func(data={}))
+
+
+class MerchantProductTypeView(APIView):
+    '''商家商品分类信息表'''
+    def post(self,request,*args,**kwargs):
+
+        employee = self.request.employee
+        merchant_id = employee.merchant_id
+        merchant_employee_id = employee.id
+        name = self.request.data.get('name')
+        father_type_id = self.request.data.get('father_type_id',None)
+        serial_number = self.request.data.get('serial_number',0)
+
+        assert name,(-22,'商品分类名为必传字段')
+        try:
+            with transaction.atomic():
+                product_type = models.MerchantProductType(
+                    name=name,
+                    father_type_id=father_type_id,
+                    merchant_employee_id=merchant_employee_id,
+                    merchant_id=merchant_id,
+                    serial_number=serial_number
+                )
+                product_type.save()
+        except Exception as w:
+            return JsonResponse(ReCode().error_func(status=-1,error=w))
+        return JsonResponse(ReCode().success_func(data={}))
+
+    def get(self,request,*args,**kwargs):
+        pass
+    def put(self,request,*args,**kwargs):
+        pass
+    def delete(self,request,*args,**kwargs):
+        pass
