@@ -207,7 +207,8 @@ class MerchantProductTypeView(APIView):
         return JsonResponse(ReCode().success_func(data={}))
 
     def get(self,request,*args,**kwargs):
-        pass
+        id = self.request.GET.get('id')
+
     def put(self,request,*args,**kwargs):
         pass
     def delete(self,request,*args,**kwargs):

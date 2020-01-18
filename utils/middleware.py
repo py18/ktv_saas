@@ -1,4 +1,4 @@
-from django.http import JsonResponse,HttpResponse
+from django.http import JsonResponse, HttpResponse
 from django.utils.deprecation import MiddlewareMixin
 import json
 import jwt
@@ -8,6 +8,7 @@ from utils.config import ini
 from apps.db_module import models
 
 recode = ReCode()
+
 
 class BlockedIpMiddleware(MiddlewareMixin):
 
@@ -19,11 +20,10 @@ class BlockedIpMiddleware(MiddlewareMixin):
             token = jwt.decode(jwt_token, ini.SecretCode, algorithm='HS256')
             user = models.MerchantEmployee.objects.get(id=token["id"])
             request.employee = user
-            
-        except Exception as e:
-            re_data = recode.error_func(-2,"请登录:" + str(e))
-            return JsonResponse(re_data)
 
+        except Exception as e:
+            re_data = recode.error_func(-2, "请登录:" + str(e))
+            return JsonResponse(re_data)
 
     # def process_view(self, request, callback, callback_args, callback_kwargs):
     #     """
@@ -40,20 +40,18 @@ class BlockedIpMiddleware(MiddlewareMixin):
                     alist = aex.split(',')
                     re_data = recode.error_func(alist[0], alist[1])
                     return JsonResponse(re_data)
-                    
+
                 else:
                     if str(exception) == '-101':
-                        return JsonResponse({"code":-101,"message":"必填参数未填"}) 
+                        return JsonResponse({"code": -101, "message": "必填参数未填"})
                     else:
                         return None
             except Exception as e:
                 print(e)
                 return None
-    
 
     def process_response(self, request, response):
         # print("中间件2返回：",json.loads(response.content))
         # print(request.user.u_id)
         # print(type(response),'---------------------')
         return response
-
