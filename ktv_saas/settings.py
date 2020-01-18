@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'apps.merchant_file',
     'apps.products',
     'apps.report',
+
 ]
 
 MIDDLEWARE = [
