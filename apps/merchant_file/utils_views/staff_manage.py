@@ -199,7 +199,7 @@ class PositionManageView(APIView):
         is_leader = request.data.get("is_leader", False)
         remark = request.data.get("remark", None)
 
-        assert name,(-19,"部门名称未填")
+        assert name,(-19,"职位名称未填")
         assert merchant_department_id,(-20,"部门未填")
 
         try:
