@@ -13,9 +13,9 @@ urlpatterns = [
     # 子店管理
     url(r'^child_mer/$',child_manage.ChaildMerchantInfoManageView.as_view()),
     # 部门管理
-    url(r'^department_manage/$',staff_manage.DepartmentManageView.as_view()),
-    # 职位管理
-    url(r'^position_manage/$',staff_manage.PositionManageView.as_view()),
-    # 员工管理
-    url(r'^staff_manage/$',staff_manage.StaffManageView.as_view()),
+    # url(r'^department_manage/$',staff_manage.DepartmentManageView.as_view()),
+    # # 职位管理
+    # url(r'^position_manage/$',staff_manage.PositionManageView.as_view()),
+    # # 员工管理
+    # url(r'^staff_manage/$',staff_manage.StaffManageView.as_view()),
 ]

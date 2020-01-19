@@ -333,7 +333,7 @@ class MerchantRawMaterial(MerchantDefModels):
 class MerchantProductSpecs(MerchantDefModels): # 商品SKU
 
     product = models.ForeignKey("MerchantProduct", on_delete=models.DO_NOTHING, verbose_name="商品外键")
-    specification_values = models.ForeignKey("MerchantSpecificationValues", on_delete=models.DO_NOTHING, verbose_name="规格值外键")
+    specification_values = ListFiled() #混合规格值的id
 
     product_type_choice = ((1,"普通商品"),(2,"套餐商品"))
     product_type = models.SmallIntegerField(choices=product_type_choice, default=1)

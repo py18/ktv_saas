@@ -63,7 +63,7 @@ class SpecificationsView(APIView):
 
             data = get_page(re_list,size,pg)
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1,error=w))
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
         return JsonResponse(ReCode().success_func(data=data))
 
     def put(self,request,*args,**kwargs):
@@ -86,7 +86,7 @@ class SpecificationsView(APIView):
             with transaction.atomic():
                 models.MerchantSpecification.objects.filter(merchant_id=merchant_id,is_del=False,id=id).update(**update_dict)
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1,error=w))
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
         return JsonResponse(ReCode().success_func(data={}))
 
 
@@ -101,7 +101,7 @@ class SpecificationsView(APIView):
             with transaction.atomic():
                 models.MerchantSpecification.objects.filter(merchant_id=merchant_id,id=id).update(**update_dict)
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1, error=w))
+            return JsonResponse(ReCode().error_func(status=-1, error=str(w)))
         return JsonResponse(ReCode().success_func(data={}))
 
 
@@ -133,7 +133,7 @@ class SpecificationValuesView(APIView):
                     )
                     specification_value.save()
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1,error=w))
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
         return JsonResponse(ReCode().success_func(data={}))
 
     def get(self,request,*args,**kwargs):
@@ -159,7 +159,7 @@ class SpecificationValuesView(APIView):
             with transaction.atomic():
                 models.MerchantSpecificationValues.objects.filter(id=id,is_del=False).update(is_del=True)
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1,error=w))
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
         return JsonResponse(ReCode().success_func(data={}))
     def put(self,request,*args,**kwargs):
         id = self.request.data.get('id')
@@ -175,7 +175,7 @@ class SpecificationValuesView(APIView):
             with transaction.atomic():
                 models.MerchantSpecificationValues.objects.filter(id=id).update(**update_dict)
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1,error=w))
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
         return JsonResponse(ReCode().success_func(data={}))
 
 
@@ -202,7 +202,7 @@ class MerchantProductTypeView(APIView):
                 )
                 product_type.save()
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1,error=w))
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
         return JsonResponse(ReCode().success_func(data={}))
 
     def get(self,request,*args,**kwargs):
@@ -241,7 +241,7 @@ class MerchantProductTypeView(APIView):
             data = sorted(re_list, key=lambda e: e.__getitem__('serial_number'))
             re_list = get_page(data,size,pg)
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1,error=w))
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
         return JsonResponse(ReCode().success_func(data=re_list))
 
     def put(self,request,*args,**kwargs):
@@ -261,7 +261,7 @@ class MerchantProductTypeView(APIView):
             with transaction.atomic():
                 models.MerchantProductType.objects.filter(id=id).update(**updata_dict)
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1,error=w))
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
         return JsonResponse(ReCode().success_func(data={}))
 
     def delete(self,request,*args,**kwargs):
@@ -276,7 +276,7 @@ class MerchantProductTypeView(APIView):
                 else:
                     models.MerchantProductType.objects.filter(id=id).update(is_del=True)
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1, error=w))
+            return JsonResponse(ReCode().error_func(status=-1, error=str(w)))
         return JsonResponse(ReCode().success_func(data={}))
 
 
@@ -308,7 +308,7 @@ class MerchantProductView(APIView):
                 )
                 product_spu.save()
         except Exception as w:
-            return JsonResponse (ReCode().error_func(status=-1,error=w))
+            return JsonResponse (ReCode().error_func(status=-1,error=str(w)))
         return JsonResponse(ReCode().success_func(data={}))
 
 
@@ -344,7 +344,7 @@ class MerchantProductView(APIView):
             data = sorted(re_list, key=lambda e: e.__getitem__('serial_number'))
             re_info = get_page(data,size,pg)
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1,error=w))
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
         return JsonResponse(ReCode().success_func(re_info))
     def put(self,request,*args,**kwargs):
         employee = self.request.employee
@@ -372,7 +372,7 @@ class MerchantProductView(APIView):
             with transaction.atomic():
                 models.MerchantProduct.objects.filter(id=id,is_del=False,merchant_id=merchant_id).update(**update_dict)
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1,error=w))
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
         return JsonResponse(ReCode().success_func(data={}))
 
     def delete(self,request,*args,**kwargs):
@@ -384,17 +384,93 @@ class MerchantProductView(APIView):
             with transaction.atomic():
                 models.MerchantProduct.objects.filter(id=id).update(is_del=True)
         except Exception as w:
-            return JsonResponse(ReCode().error_func(status=-1,error=w))
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
         return JsonResponse(ReCode().success_func(data={}))
 
 
 class MerchantProductSpecsView(APIView):
     '''创建商品sku的视图，是商品的最后一层'''
     def post(self,request,*args,**kwargs):
-        pass
+        employee = self.request.employee
+        merchant_id = employee.merchant_id
+        merchant_employee_id = employee.id
+
+        product_id = self.request.data.get('product_id') #商品id
+        specification_values = self.request.data.get('specification_values') #属性值list，里面存放属性值id
+        product_type = self.request.data.get('product_type') #是套餐还是商品
+        price = self.request.data.get('price') #单价
+        unit_id = self.request.data.get('unit_id') #单位id
+        image = self.request.data.get('image') #图片地址
+        introduction = self.request.data.get('introduction') #简介
+        body = self.request.data.get('body') #文本
+        is_low = self.request.data.get('is_low') #是否低消
+        is_commission = self.request.data.get('is_commission') #是否提成
+        is_discount = self.request.data.get('is_discount') #是否折扣
+        merchant_print_position_id = self.request.data.get('merchant_print_position_id') #打印到某台打印机
+        is_calculation = self.request.data.get('is_calculation') #参与库存计算
+        is_raw_material = self.request.data.get('is_raw_material') #原料
+        is_accessories = self.request.data.get('is_accessories') #是否有配品
+        publish_status = self.request.data.get('publish_status') #是否上架
+        serial_number = self.request.data.get('serial_number',0) #排序序列号
+
+        assert product_id, (-50,'重要参数未传（{}）'.format('product_id'))
+        assert specification_values, (-51,'重要参数未传（{}）'.format('specification_values'))
+        assert product_type, (-52,'重要参数未传（{}）'.format('product_type'))
+        assert price, (-53,'重要参数未传（{}）'.format('price'))
+        assert unit_id, (-54,'重要参数未传（{}）'.format('unit_id'))
+        assert image, (-55,'重要参数未传（{}）'.format('image'))
+        assert introduction, (-56,'重要参数未传（{}）'.format('introduction'))
+        assert body, (-57,'重要参数未传（{}）'.format('body'))
+        assert is_low, (-58,'重要参数未传（{}）'.format('is_low'))
+        assert is_commission, (-59,'重要参数未传（{}）'.format('is_commission'))
+        assert is_discount, (-301,'重要参数未传（{}）'.format('is_discount'))
+        assert merchant_print_position_id, (-302,'重要参数未传（{}）'.format('merchant_print_position_id'))
+        assert is_calculation, (-303,'重要参数未传（{}）'.format('is_calculation'))
+        assert is_raw_material, (-304,'重要参数未传（{}）'.format('is_raw_material'))
+        assert is_accessories, (-305,'重要参数未传（{}）'.format('is_accessories'))
+        assert publish_status, (-306,'重要参数未传（{}）'.format('publish_status'))
+
+        try:
+            with transaction.atomic():
+                product_sku = models.MerchantProductSpecs(
+                    product_id = product_id,
+                    specification_values=specification_values,
+                    product_type=product_type,
+                    price=price,
+                    unit_id=unit_id,
+                    image=image,
+                    introduction=introduction,
+                    body=body,
+                    is_low=is_low,
+                    is_commission=is_commission,
+                    is_discount=is_discount,
+                    merchant_print_position_id=merchant_print_position_id,
+                    is_calculation=is_calculation,
+                    is_raw_material=is_raw_material,
+                    is_accessories=is_accessories,
+                    publish_status=publish_status,
+                    merchant_employee_id=merchant_employee_id,
+                    merchant_id=merchant_id,
+                    serial_number=serial_number,
+                )
+                product_sku.save()
+        except Exception as w:
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
+        return JsonResponse(ReCode().success_func(data={}))
+
     def get(self,request,*args,**kwargs):
         pass
     def put(self,request,*args,**kwargs):
         pass
     def delete(self,request,*args,**kwargs):
-        pass
+        id = self.request.data.get('id')
+        employee = self.request.employee
+        merchant_id = employee.merchant_id
+        merchant_employee_id = employee.id
+        assert id,(-9,'重要参数未传')
+        try:
+            with transaction.atomic():
+                models.MerchantProductSpecs.objects.filter(id=id,merchant_id=merchant_id).update(is_del=True)
+        except Exception as w:
+            return JsonResponse(ReCode().error_func(status=-1,error=str(w)))
+        return JsonResponse(ReCode().success_func(data={}))
